@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blockchain Secure Surveillance - Home</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .hero-enhanced {
+            background: #0a0015;
+            min-height: 600px;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #liveVideoCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
+            z-index: 0;
+        }
+
+        .hero-enhanced > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            animation: slideInDown 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .hero-content p {
+            font-size: 1.3rem;
+            margin-bottom: 30px;
+            animation: slideInUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s both;
+        }
+
+        .hero-buttons {
+            animation: bounceIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.4s both;
+        }
+
+        /* Stat Cards */
+        .stat-card-enhanced {
+            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 100%);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            border: 1px solid rgba(13, 110, 253, 0.1);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            margin-bottom: 20px;
+        }
+
+        .stat-card-enhanced:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.2);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 10px;
+        }
+
+        /* Feature Cards Enhanced */
+        .feature-card-enhanced {
+            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 100%);
+            border-radius: 15px;
+            padding: 40px;
+            height: 100%;
+            border: 1px solid rgba(13, 110, 253, 0.1);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card-enhanced::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            opacity: 0.1;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card-enhanced:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 30px 60px rgba(102, 126, 234, 0.15);
+        }
+
+        .feature-card-enhanced:hover::before {
+            top: -10%;
+            right: -10%;
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .feature-card-enhanced h5 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .feature-card-enhanced p {
+            color: #666;
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Quick Links Section */
+        .quick-link {
+            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 100%);
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            border: 1px solid rgba(13, 110, 253, 0.1);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            text-decoration: none;
+            color: #333;
+            display: block;
+        }
+
+        .quick-link:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.2);
+            color: #0d6efd;
+        }
+
+        .quick-link-icon {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .quick-link-title {
+            font-weight: 700;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+
+        .quick-link-desc {
+            font-size: 0.85rem;
+            color: #999;
+        }
+
+        /* Section Styling */
+        section {
+            padding: 80px 0;
+        }
+
+        /* Section backgrounds with video */
+        #statsSection, #featuresSection, #quickAccessSection {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section-video-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
+            z-index: 0;
+        }
+
+        .section-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        #statsSection {
+            background: linear-gradient(135deg, #f5f7ff 0%, #f0f4ff 100%);
+        }
+
+        #featuresSection {
+            background: linear-gradient(135deg, #ffffff 0%, #f8faff 100%);
+        }
+
+        #quickAccessSection {
+            background: linear-gradient(135deg, #f5f7ff 0%, #f0f4ff 100%);
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 50px;
+            text-align: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 50px;
+        }
+
+
+
+        /* CTA Enhanced */
+        .cta-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            padding: 60px;
+            text-align: center;
+            color: white;
+        }
+
+        .cta-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            font-weight: 800;
+        }
+
+        .cta-section p {
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+            opacity: 0.95;
+        }
+
+        /* Footer Enhanced */
+        footer {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .cta-section {
+                padding: 40px;
+            }
+
+            .cta-section h2 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">🔐 Secure Surveillance</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link active" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="device-management.html">Devices</a></li>
+                    <li class="nav-item"><a class="nav-link" href="upload.html">Upload</a></li>
+                    <li class="nav-item"><a class="nav-link" href="verification.html">Verify</a></li>
+                    <li class="nav-item"><a class="nav-link" href="analytics.html">Analytics</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero-enhanced">
+        <canvas id="liveVideoCanvas"></canvas>
+        <div class="container hero-content">
+            <div class="row align-items-center">
+                <div class="col-lg-12 text-white">
+                    <h1 class="display-4">🔒 Blockchain-Integrated Surveillance</h1>
+                    <p class="lead">Advanced encryption with adaptive 5D chaotic system and immutable blockchain verification</p>
+                    <div class="hero-buttons">
+                        <a href="dashboard.html" class="btn btn-light btn-lg me-3">📊 Dashboard</a>
+                        <a href="upload.html" class="btn btn-outline-light btn-lg">📤 Upload</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- System Stats -->
+    <section class="py-5" id="statsSection">
+        <canvas id="statsVideoCanvas" class="section-video-bg"></canvas>
+        <div class="container section-content">
+            <h2 class="section-title mb-5">📈 System Overview</h2>
+            <div class="row">
+                <div class="col-md-3 col-sm-6">
+                    <div class="stat-card-enhanced">
+                        <div class="stat-number">7</div>
+                        <div class="stat-label">Active Cameras</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="stat-card-enhanced">
+                        <div class="stat-number">7</div>
+                        <div class="stat-label">Encrypted Images</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="stat-card-enhanced">
+                        <div class="stat-number">5</div>
+                        <div class="stat-label">Blockchain Blocks</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="stat-card-enhanced">
+                        <div class="stat-number">100%</div>
+                        <div class="stat-label">Chain Verified</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Features -->
+    <section class="py-5" id="featuresSection">
+        <canvas id="featuresVideoCanvas" class="section-video-bg"></canvas>
+        <div class="container section-content">
+            <h2 class="section-title mb-5">✨ Core Technology</h2>
+            <div class="row">
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="feature-card-enhanced">
+                        <span class="feature-icon">🌀</span>
+                        <h5>5D Chaotic Encryption</h5>
+                        <p>Logistic, Henon, Tent, and Sine maps combined for maximum entropy (>7.9) and ultra-high key space (2^256)</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="feature-card-enhanced">
+                        <span class="feature-icon">⛓️</span>
+                        <h5>Immutable Blockchain</h5>
+                        <p>SHA-256 proof-of-work ensures tamper detection, complete audit trail, and chain integrity verification</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="feature-card-enhanced">
+                        <span class="feature-icon">📊</span>
+                        <h5>Security Analytics</h5>
+                        <p>Real-time monitoring of NPCR, UACI, Correlation, Entropy, and PSNR metrics for guaranteed encryption quality</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="feature-card-enhanced">
+                        <span class="feature-icon">🌫️</span>
+                        <h5>Fog Layer Processing</h5>
+                        <p>Encrypt surveillance frames at the edge before cloud storage, reducing bandwidth and ensuring privacy</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="feature-card-enhanced">
+                        <span class="feature-icon">📹</span>
+                        <h5>Multi-Device Management</h5>
+                        <p>Centralized control for unlimited IoT cameras with real-time health monitoring and activity tracking</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="feature-card-enhanced">
+                        <span class="feature-icon">🔍</span>
+                        <h5>Instant Verification</h5>
+                        <p>One-click hash verification against blockchain to instantly detect any image tampering or manipulation</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Access -->
+    <section class="py-5" id="quickAccessSection">
+        <canvas id="quickAccessVideoCanvas" class="section-video-bg"></canvas>
+        <div class="container section-content">
+            <h2 class="section-title mb-5">🚀 Quick Access</h2>
+            <div class="row">
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <a href="dashboard.html" class="quick-link">
+                        <span class="quick-link-icon">📊</span>
+                        <div class="quick-link-title">Dashboard</div>
+                        <div class="quick-link-desc">View live statistics & analytics</div>
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <a href="device-management.html" class="quick-link">
+                        <span class="quick-link-icon">📹</span>
+                        <div class="quick-link-title">Manage Devices</div>
+                        <div class="quick-link-desc">Control IoT cameras</div>
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <a href="upload.html" class="quick-link">
+                        <span class="quick-link-icon">📤</span>
+                        <div class="quick-link-title">Upload Frame</div>
+                        <div class="quick-link-desc">Encrypt & store images</div>
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <a href="verification.html" class="quick-link">
+                        <span class="quick-link-icon">✅</span>
+                        <div class="quick-link-title">Verify Image</div>
+                        <div class="quick-link-desc">Check blockchain hash</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-5">
+        <div class="container">
+            <div class="cta-section">
+                <h2>🎯 Get Started Today</h2>
+                <p>Explore our comprehensive surveillance security platform with advanced encryption and blockchain verification</p>
+                <a href="dashboard.html" class="btn btn-light btn-lg me-3">Enter Dashboard</a>
+                <a href="analytics.html" class="btn btn-outline-light btn-lg">View Analytics</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-white text-center py-4 mt-5">
+        <p class="mb-0">&copy; 2026 Blockchain Secure Surveillance System. Powered by 5D Chaotic Encryption &amp; Blockchain Technology.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Live Video Background Animation -->
+    <script>
+        class SurveillanceVideoBackground {
+            constructor() {
+                this.canvas = document.getElementById('liveVideoCanvas');
+                this.ctx = this.canvas.getContext('2d');
+                
+                // Set canvas size
+                this.resizeCanvas();
+                window.addEventListener('resize', () => this.resizeCanvas());
+                
+                // Animation properties
+                this.particles = [];
+                this.time = 0;
+                this.gridOffset = 0;
+                
+                // Initialize particles
+                this.initParticles();
+                
+                // Start animation
+                this.animate();
+            }
+            
+            resizeCanvas() {
+                this.canvas.width = window.innerWidth;
+                this.canvas.height = this.canvas.parentElement.clientHeight;
+            }
+            
+            initParticles() {
+                this.particles = [];
+                for (let i = 0; i < 100; i++) {
+                    this.particles.push({
+                        x: Math.random() * this.canvas.width,
+                        y: Math.random() * this.canvas.height,
+                        vx: (Math.random() - 0.5) * 2,
+                        vy: (Math.random() - 0.5) * 2,
+                        size: Math.random() * 0.5 + 0.2,
+                        opacity: Math.random() * 0.3 + 0.2,
+                        color: ['#667eea', '#764ba2', '#f093fb', '#f5576c'][Math.floor(Math.random() * 4)]
+                    });
+                }
+            }
+            
+            drawBackground() {
+                // Deep dark base
+                this.ctx.fillStyle = '#0a0015';
+                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                // Gradient overlay
+                const grad = this.ctx.createLinearGradient(0, 0, this.canvas.width, this.canvas.height);
+                grad.addColorStop(0, 'rgba(26, 0, 51, 0.8)');
+                grad.addColorStop(0.5, 'rgba(45, 0, 82, 0.7)');
+                grad.addColorStop(1, 'rgba(61, 0, 107, 0.8)');
+                this.ctx.fillStyle = grad;
+                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+            }
+            
+            drawAnimatedGradients() {
+                // Animated color blobs
+                const blobs = [
+                    { x: Math.sin(this.time * 0.0005) * 200 + this.canvas.width * 0.2, y: Math.cos(this.time * 0.0003) * 150 + this.canvas.height * 0.3, color: '#667eea', size: 300 },
+                    { x: Math.sin(this.time * 0.0004) * 250 + this.canvas.width * 0.8, y: Math.cos(this.time * 0.0005) * 200 + this.canvas.height * 0.2, color: '#f093fb', size: 350 },
+                    { x: Math.sin(this.time * 0.0006) * 150 + this.canvas.width * 0.5, y: Math.cos(this.time * 0.0004) * 250 + this.canvas.height * 0.8, color: '#f5576c', size: 400 }
+                ];
+                
+                blobs.forEach(blob => {
+                    const grad = this.ctx.createRadialGradient(blob.x, blob.y, 0, blob.x, blob.y, blob.size);
+                    grad.addColorStop(0, blob.color + '30');
+                    grad.addColorStop(0.5, blob.color + '10');
+                    grad.addColorStop(1, blob.color + '00');
+                    
+                    this.ctx.fillStyle = grad;
+                    this.ctx.beginPath();
+                    this.ctx.arc(blob.x, blob.y, blob.size, 0, Math.PI * 2);
+                    this.ctx.fill();
+                });
+            }
+            
+            drawGrid() {
+                const gridSize = 50;
+                const offset = (this.gridOffset % gridSize);
+                
+                this.ctx.strokeStyle = 'rgba(102, 126, 234, 0.1)';
+                this.ctx.lineWidth = 1;
+                
+                // Vertical lines
+                for (let x = -gridSize + offset; x < this.canvas.width; x += gridSize) {
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(x, 0);
+                    this.ctx.lineTo(x, this.canvas.height);
+                    this.ctx.stroke();
+                }
+                
+                // Horizontal lines
+                for (let y = 0; y < this.canvas.height; y += gridSize) {
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(0, y);
+                    this.ctx.lineTo(this.canvas.width, y);
+                    this.ctx.stroke();
+                }
+            }
+            
+            updateAndDrawParticles() {
+                this.particles.forEach(p => {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    
+                    // Wrap around
+                    if (p.x < 0) p.x = this.canvas.width;
+                    if (p.x > this.canvas.width) p.x = 0;
+                    if (p.y < 0) p.y = this.canvas.height;
+                    if (p.y > this.canvas.height) p.y = 0;
+                    
+                    // Pulsing effect
+                    const pulse = Math.sin(this.time * 0.01 + p.x) * 0.15 + 0.85;
+                    
+                    this.ctx.fillStyle = p.color + Math.floor(p.opacity * 255 * pulse).toString(16).padStart(2, '0');
+                    this.ctx.beginPath();
+                    this.ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    this.ctx.fill();
+                });
+            }
+            
+            drawScanLines() {
+                // Horizontal scan lines effect
+                const lineSpacing = 3;
+                this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.02)';
+                this.ctx.lineWidth = 1;
+                
+                for (let y = 0; y < this.canvas.height; y += lineSpacing) {
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(0, y);
+                    this.ctx.lineTo(this.canvas.width, y);
+                    this.ctx.stroke();
+                }
+            }
+            
+            drawSurveillanceCorner() {
+                // Show "REC" indicator in corner
+                this.ctx.font = 'bold 16px Arial';
+                this.ctx.fillStyle = '#ff0000';
+                this.ctx.globalAlpha = 0.6 + Math.sin(this.time * 0.05) * 0.4;
+                this.ctx.fillText('● REC', 20, 40);
+                this.ctx.globalAlpha = 1;
+            }
+            
+            animate() {
+                this.time++;
+                this.gridOffset += 1;
+                
+                // Draw layers
+                this.drawBackground();
+                this.drawAnimatedGradients();
+                this.drawGrid();
+                this.updateAndDrawParticles();
+                this.drawScanLines();
+                this.drawSurveillanceCorner();
+                
+                requestAnimationFrame(() => this.animate());
+            }
+        }
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            new SurveillanceVideoBackground();
+            
+            // Initialize section video backgrounds
+            new SectionVideoBackground('statsVideoCanvas', 'stats');
+            new SectionVideoBackground('featuresVideoCanvas', 'features');
+            new SectionVideoBackground('quickAccessVideoCanvas', 'quickAccess');
+        });
+
+        // Section Video Background Class
+        class SectionVideoBackground {
+            constructor(canvasId, type) {
+                this.canvas = document.getElementById(canvasId);
+                if (!this.canvas) return;
+                
+                this.ctx = this.canvas.getContext('2d');
+                this.type = type;
+                this.time = 0;
+                this.particles = [];
+                
+                this.resizeCanvas();
+                window.addEventListener('resize', () => this.resizeCanvas());
+                
+                this.initParticles();
+                this.animate();
+            }
+            
+            resizeCanvas() {
+                this.canvas.width = this.canvas.parentElement.offsetWidth;
+                this.canvas.height = this.canvas.parentElement.offsetHeight;
+            }
+            
+            initParticles() {
+                this.particles = [];
+                const count = this.type === 'stats' ? 50 : this.type === 'features' ? 60 : 40;
+                
+                for (let i = 0; i < count; i++) {
+                    this.particles.push({
+                        x: Math.random() * this.canvas.width,
+                        y: Math.random() * this.canvas.height,
+                        vx: (Math.random() - 0.5) * 1,
+                        vy: (Math.random() - 0.5) * 1,
+                        size: Math.random() * 0.3 + 0.1,
+                        opacity: Math.random() * 0.15 + 0.05,
+                        color: this.getColorByType()
+                    });
+                }
+            }
+            
+            getColorByType() {
+                const colors = {
+                    stats: ['#667eea', '#764ba2'],
+                    features: ['#f093fb', '#667eea'],
+                    quickAccess: ['#f5576c', '#764ba2']
+                };
+                return colors[this.type][Math.floor(Math.random() * colors[this.type].length)];
+            }
+            
+            animate() {
+                this.time++;
+                
+                // Clear and draw background
+                this.ctx.fillStyle = 'rgba(255, 255, 255, 0)';
+                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                // Draw subtle animated gradient
+                const grad = this.ctx.createLinearGradient(0, 0, this.canvas.width, this.canvas.height);
+                
+                if (this.type === 'stats') {
+                    grad.addColorStop(0, 'rgba(102, 126, 234, 0.04)');
+                    grad.addColorStop(1, 'rgba(118, 75, 162, 0.03)');
+                } else if (this.type === 'features') {
+                    grad.addColorStop(0, 'rgba(240, 147, 251, 0.03)');
+                    grad.addColorStop(1, 'rgba(102, 126, 234, 0.04)');
+                } else {
+                    grad.addColorStop(0, 'rgba(245, 87, 108, 0.04)');
+                    grad.addColorStop(1, 'rgba(118, 75, 162, 0.03)');
+                }
+                
+                this.ctx.fillStyle = grad;
+                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                // Draw animated blob
+                this.drawAnimatedBlob();
+                
+                // Update and draw particles
+                this.updateAndDrawParticles();
+                
+                requestAnimationFrame(() => this.animate());
+            }
+            
+            drawAnimatedBlob() {
+                const blobX = Math.sin(this.time * 0.0008) * this.canvas.width * 0.15 + this.canvas.width * 0.5;
+                const blobY = Math.cos(this.time * 0.0006) * this.canvas.height * 0.15 + this.canvas.height * 0.5;
+                
+                const grad = this.ctx.createRadialGradient(blobX, blobY, 0, blobX, blobY, 250);
+                
+                let color = '#667eea';
+                if (this.type === 'features') color = '#f093fb';
+                if (this.type === 'quickAccess') color = '#f5576c';
+                
+                grad.addColorStop(0, color + '15');
+                grad.addColorStop(0.5, color + '08');
+                grad.addColorStop(1, color + '00');
+                
+                this.ctx.fillStyle = grad;
+                this.ctx.beginPath();
+                this.ctx.arc(blobX, blobY, 250, 0, Math.PI * 2);
+                this.ctx.fill();
+            }
+            
+            updateAndDrawParticles() {
+                this.particles.forEach(p => {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    
+                    if (p.x < 0) p.x = this.canvas.width;
+                    if (p.x > this.canvas.width) p.x = 0;
+                    if (p.y < 0) p.y = this.canvas.height;
+                    if (p.y > this.canvas.height) p.y = 0;
+                    
+                    const pulse = Math.sin(this.time * 0.008 + p.x) * 0.1 + 0.9;
+                    
+                    this.ctx.fillStyle = p.color + Math.floor(p.opacity * 255 * pulse).toString(16).padStart(2, '0');
+                    this.ctx.beginPath();
+                    this.ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    this.ctx.fill();
+                });
+            }
+        }
+    </script>
+</body>
+</html>

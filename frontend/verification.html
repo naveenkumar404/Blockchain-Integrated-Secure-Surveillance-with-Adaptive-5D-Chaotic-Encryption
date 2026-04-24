@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blockchain Verification</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">🔐 Secure Surveillance</a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="device-management.html">Devices</a></li>
+                    <li class="nav-item"><a class="nav-link" href="upload.html">Upload</a></li>
+                    <li class="nav-item"><a class="nav-link" href="verification.html">Verify</a></li>
+                    <li class="nav-item"><a class="nav-link" href="analytics.html">Analytics</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-4">
+        <h1 class="mb-4">🔍 Blockchain Verification</h1>
+
+        <div class="row">
+            <!-- Verification Panel -->
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5>✅ Verify Image Integrity</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="form-label">Select Encrypted Image</label>
+                            <select id="imageSelect" class="form-control">
+                                <option value="">-- Choose an image --</option>
+                            </select>
+                        </div>
+
+                        <button id="verifyBtn" class="btn btn-primary w-100 mb-3">
+                            🔗 Verify with Blockchain
+                        </button>
+
+                        <div id="verificationResult" style="display: none;">
+                            <div id="verifiedAlert" class="alert alert-success" style="display: none;">
+                                <h5>✅ Image Integrity Verified</h5>
+                                <p class="mb-0">This encrypted image has not been tampered with.</p>
+                            </div>
+
+                            <div id="tamperedAlert" class="alert alert-danger" style="display: none;">
+                                <h5>❌ Image Integrity Compromised</h5>
+                                <p class="mb-0">This encrypted image has been tampered with or modified.</p>
+                            </div>
+
+                            <table class="table table-sm mt-3">
+                                <tr>
+                                    <td><strong>Stored Hash:</strong></td>
+                                    <td id="storedHash" class="font-monospace small">--</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Recalculated Hash:</strong></td>
+                                    <td id="recalculatedHash" class="font-monospace small">--</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Match:</strong></td>
+                                    <td id="hashMatch">--</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Blockchain Status -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>⛓️ Blockchain Chain Verification</h5>
+                    </div>
+                    <div class="card-body">
+                        <button id="verifyChainBtn" class="btn btn-info w-100 mb-3">
+                            🔗 Verify Entire Chain
+                        </button>
+
+                        <div id="chainStatus" style="display: none;">
+                            <div id="chainValidAlert" class="alert alert-success" style="display: none;">
+                                <h5>✅ Blockchain Valid</h5>
+                                <p id="blockCount" class="mb-0">Total blocks verified</p>
+                            </div>
+
+                            <div id="chainInvalidAlert" class="alert alert-danger" style="display: none;">
+                                <h5>❌ Blockchain Compromised</h5>
+                                <p class="mb-0">Blockchain integrity has been breached!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Blockchain Blocks List -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5>📦 Blockchain Blocks</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-sm" id="blocksTable">
+                        <thead>
+                            <tr>
+                                <th>Block #</th>
+                                <th>Timestamp</th>
+                                <th>Previous Hash</th>
+                                <th>Current Hash</th>
+                                <th>Nonce</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="blocksList">
+                            <tr>
+                                <td colspan="6" class="text-center text-muted">Loading blocks...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/verification.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

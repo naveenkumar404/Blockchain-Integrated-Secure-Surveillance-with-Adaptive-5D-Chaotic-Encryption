@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Login - Blockchain Surveillance</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .login-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #loginBackgroundCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .login-content {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-card {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(100, 200, 255, 0.3);
+            border-radius: 20px;
+            padding: 60px;
+            max-width: 450px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 0 40px rgba(100, 200, 255, 0.1);
+            animation: slideInUp 0.8s ease-out;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .login-title {
+            font-size: 32px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .login-subtitle {
+            color: #b0c4de;
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            color: #e0e6ff;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .form-control {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(100, 200, 255, 0.2);
+            border-radius: 10px;
+            padding: 12px 16px;
+            color: #e0e6ff;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(102, 126, 234, 0.6);
+            color: #e0e6ff;
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .form-control::placeholder {
+            color: #8892b0;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .toggle-link {
+            text-align: center;
+            margin-top: 25px;
+            color: #b0c4de;
+            font-size: 13px;
+        }
+
+        .toggle-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .toggle-link a:hover {
+            color: #764ba2;
+        }
+
+        .demo-info {
+            background: rgba(102, 126, 234, 0.1);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 30px;
+            color: #b0c4de;
+            font-size: 12px;
+        }
+
+        .demo-info strong {
+            color: #667eea;
+        }
+
+        .demo-info p {
+            margin: 5px 0;
+        }
+
+        .input-icon {
+            position: relative;
+        }
+
+        .input-icon::before {
+            content: '';
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 14px;
+            height: 14px;
+            opacity: 0.5;
+        }
+
+        .input-icon .form-control {
+            padding-left: 45px;
+        }
+
+        @media (max-width: 768px) {
+            .login-card {
+                padding: 40px 30px;
+            }
+
+            .login-title {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <canvas id="loginBackgroundCanvas"></canvas>
+        
+        <div class="login-content">
+            <div class="login-card">
+                <div class="login-header">
+                    <div class="login-title">🔐 SECURE ACCESS</div>
+                    <div class="login-subtitle">BLOCKCHAIN SURVEILLANCE SYSTEM</div>
+                </div>
+
+                <form id="loginFormElement">
+                    <div class="form-group">
+                        <label class="form-label">📧 Email Address</label>
+                        <input 
+                            type="email" 
+                            id="loginEmail" 
+                            class="form-control" 
+                            placeholder="admin@example.com" 
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">🔑 Password</label>
+                        <input 
+                            type="password" 
+                            id="loginPassword" 
+                            class="form-control" 
+                            placeholder="Enter your password" 
+                            required
+                        >
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        ▶ Login Securely
+                    </button>
+                </form>
+
+                <div class="toggle-link">
+                    Don't have an account? <a onclick="window.location.href='signup.html'">Create Account</a>
+                </div>
+
+                <div class="demo-info">
+                    <strong>🎯 Demo Credentials</strong>
+                    <p><strong>Email:</strong> admin@example.com</p>
+                    <p><strong>Password:</strong> password123</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Login Background Animation
+        class LoginBackground {
+            constructor() {
+                this.canvas = document.getElementById('loginBackgroundCanvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.time = 0;
+                this.particles = [];
+                this.gridSize = 40;
+                this.resizeCanvas();
+                this.initParticles();
+                this.animate();
+                window.addEventListener('resize', () => this.resizeCanvas());
+            }
+
+            resizeCanvas() {
+                this.canvas.width = window.innerWidth;
+                this.canvas.height = window.innerHeight;
+            }
+
+            initParticles() {
+                this.particles = [];
+                for (let i = 0; i < 80; i++) {
+                    this.particles.push({
+                        x: Math.random() * this.canvas.width,
+                        y: Math.random() * this.canvas.height,
+                        vx: (Math.random() - 0.5) * 0.5,
+                        vy: (Math.random() - 0.5) * 0.5,
+                        size: Math.random() * 2 + 1,
+                        opacity: Math.random() * 0.5 + 0.3
+                    });
+                }
+            }
+
+            drawBackground() {
+                // Dark base gradient
+                const gradient = this.ctx.createLinearGradient(0, 0, this.canvas.width, this.canvas.height);
+                gradient.addColorStop(0, '#0f172a');
+                gradient.addColorStop(0.5, '#1a2847');
+                gradient.addColorStop(1, '#0f172a');
+                this.ctx.fillStyle = gradient;
+                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+            }
+
+            drawGrid() {
+                this.ctx.strokeStyle = `rgba(102, 126, 234, ${0.1 + Math.sin(this.time * 0.003) * 0.05})`;
+                this.ctx.lineWidth = 0.5;
+
+                for (let x = 0; x < this.canvas.width; x += this.gridSize) {
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(x + Math.sin(this.time * 0.005) * 10, 0);
+                    this.ctx.lineTo(x + Math.sin(this.time * 0.005 + 1) * 10, this.canvas.height);
+                    this.ctx.stroke();
+                }
+
+                for (let y = 0; y < this.canvas.height; y += this.gridSize) {
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(0, y + Math.cos(this.time * 0.005) * 10);
+                    this.ctx.lineTo(this.canvas.width, y + Math.cos(this.time * 0.005 + 1) * 10);
+                    this.ctx.stroke();
+                }
+            }
+
+            drawAnimatedBlobs() {
+                for (let i = 0; i < 3; i++) {
+                    const blobX = Math.sin(this.time * 0.0004 + i * 2) * this.canvas.width * 0.3 + this.canvas.width * 0.5;
+                    const blobY = Math.cos(this.time * 0.0003 + i * 1.5) * this.canvas.height * 0.3 + this.canvas.height * 0.5;
+                    const radius = 150 + Math.sin(this.time * 0.005 + i) * 50;
+
+                    const gradient = this.ctx.createRadialGradient(blobX, blobY, 0, blobX, blobY, radius);
+                    const colors = [
+                        ['#667eea', '#764ba2'],
+                        ['#f093fb', '#667eea'],
+                        ['#4facfe', '#00f2fe']
+                    ];
+                    gradient.addColorStop(0, colors[i][0]);
+                    gradient.addColorStop(1, colors[i][1]);
+                    
+                    this.ctx.fillStyle = gradient;
+                    this.ctx.globalAlpha = 0.08 + Math.sin(this.time * 0.004) * 0.03;
+                    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+                }
+                this.ctx.globalAlpha = 1;
+            }
+
+            updateAndDrawParticles() {
+                this.particles.forEach(particle => {
+                    particle.x += particle.vx;
+                    particle.y += particle.vy;
+
+                    if (particle.x < 0) particle.x = this.canvas.width;
+                    if (particle.x > this.canvas.width) particle.x = 0;
+                    if (particle.y < 0) particle.y = this.canvas.height;
+                    if (particle.y > this.canvas.height) particle.y = 0;
+
+                    const pulse = Math.sin(this.time * 0.02 + Math.random() * 10) * 0.5 + 0.5;
+                    this.ctx.fillStyle = `rgba(100, 200, 255, ${particle.opacity * pulse})`;
+                    this.ctx.beginPath();
+                    this.ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+                    this.ctx.fill();
+                });
+            }
+
+            animate() {
+                this.time++;
+                this.drawBackground();
+                this.drawAnimatedBlobs();
+                this.drawGrid();
+                this.updateAndDrawParticles();
+                requestAnimationFrame(() => this.animate());
+            }
+        }
+
+        // Initialize background
+        document.addEventListener('DOMContentLoaded', () => {
+            new LoginBackground();
+
+            // Login form handler
+            document.getElementById('loginFormElement').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const email = document.getElementById('loginEmail').value;
+                const password = document.getElementById('loginPassword').value;
+
+                if (email && password) {
+                    localStorage.setItem('token', 'mock_token_' + Date.now());
+                    localStorage.setItem('userEmail', email);
+                    alert('✓ Login successful!');
+                    window.location.href = 'dashboard.html';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

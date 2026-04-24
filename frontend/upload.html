@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload & Encryption</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">🔐 Secure Surveillance</a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="device-management.html">Devices</a></li>
+                    <li class="nav-item"><a class="nav-link" href="upload.html">Upload</a></li>
+                    <li class="nav-item"><a class="nav-link" href="verification.html">Verify</a></li>
+                    <li class="nav-item"><a class="nav-link" href="analytics.html">Analytics</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-4">
+        <h1 class="mb-4">📤 Upload & Encryption</h1>
+
+        <div class="row">
+            <!-- Upload Panel -->
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5>🔒 Upload Surveillance Frame</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="uploadForm">
+                            <div class="mb-3">
+                                <label class="form-label">Select Device</label>
+                                <select id="deviceSelect" class="form-control" required>
+                                    <option value="">-- Choose a device --</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Select Image</label>
+                                <input type="file" id="imageInput" class="form-control" accept="image/*" required>
+                            </div>
+
+                            <div id="imagePreview" class="mb-3" style="display: none;">
+                                <img id="preview" src="" alt="Preview" class="img-thumbnail" style="max-width: 100%;">
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Encryption Parameters</label>
+                                <select id="encryptionParams" class="form-control">
+                                    <option value="auto">Auto (Adaptive)</option>
+                                    <option value="high">High Security</option>
+                                    <option value="balanced">Balanced</option>
+                                    <option value="fast">Fast</option>
+                                </select>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary w-100">🔐 Encrypt & Upload</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progress & Results Panel -->
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5>📊 Encryption Progress</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="progressSection" style="display: none;">
+                            <div class="mb-3">
+                                <p><strong>Status:</strong> <span id="uploadStatus">Ready</span></p>
+                                <div class="progress" style="height: 25px;">
+                                    <div id="uploadProgress" class="progress-bar progress-bar-striped progress-bar-animated" 
+                                         role="progressbar" style="width: 0%">0%</div>
+                                </div>
+                            </div>
+
+                            <div id="metricsResult" style="display: none;" class="alert alert-success">
+                                <h6>✅ Encryption Successful!</h6>
+                                <table class="table table-sm">
+                                    <tr>
+                                        <td><strong>Entropy:</strong></td>
+                                        <td id="resultEntropy">--</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>NPCR:</strong></td>
+                                        <td id="resultNPCR">--</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>UACI:</strong></td>
+                                        <td id="resultUACI">--</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Correlation:</strong></td>
+                                        <td id="resultCorrelation">--</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Block Hash:</strong></td>
+                                        <td id="resultHash">--</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div id="idleMessage" class="text-center text-muted">
+                            <p>Upload and encrypt a surveillance frame</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fog Layer Info -->
+                <div class="card">
+                    <div class="card-header">
+                        <h5>🌫️ Fog Layer Simulation</h5>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Processing Location:</strong> Edge Device</p>
+                        <p><strong>Latency:</strong> <span id="fogLatency">--</span>ms</p>
+                        <p><strong>Cloud Upload Time:</strong> <span id="cloudUploadTime">--</span>ms</p>
+                        <p class="text-success small">✓ Encrypted before transmission to cloud</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Uploads -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5>📋 Recent Uploads</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped" id="uploadsTable">
+                        <thead>
+                            <tr>
+                                <th>Device</th>
+                                <th>Time</th>
+                                <th>Entropy</th>
+                                <th>Status</th>
+                                <th>Hash</th>
+                            </tr>
+                        </thead>
+                        <tbody id="uploadsList">
+                            <tr>
+                                <td colspan="5" class="text-center text-muted">No uploads yet</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/upload.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
